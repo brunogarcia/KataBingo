@@ -134,8 +134,8 @@ var Carton = function() {
 
     this.GenerarValores = function() {
         var num = 0;
-        for (var i = 0; i < this.GetCuadricula().length; i++) {//3
-            for (var j = 0; j < this.GetCuadricula()[i].length; j++) {//9
+        for (var i = 0; i < this.GetCuadricula().length; i++) {
+            for (var j = 0; j < this.GetCuadricula()[i].length; j++) {
                 if (this.GetPosiciones(i, j) === 1) {
                 num = this.GenerarNumeroRandom(this.GetRango('inicio', i), this.GetRango('fin', i));
                     this.SetValores(i, j, num);
@@ -158,17 +158,6 @@ var Carton = function() {
     this.GenerarValores();
 
 }
-
-
-
-/*var carton = new Carton();
-carton.GenerarPosiciones();
-console.log(carton.GetPosiciones()[0]);
-console.log(carton.GetPosiciones()[1]);
-console.log(carton.GetPosiciones()[2]);
-console.log(carton.GetPosicionesPorTipo(0));
-console.log(carton.GetPosicionesPorTipo(1));
-*/
 
 var Jugador = function() {
     this.MiCarton = function() {
