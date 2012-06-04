@@ -56,22 +56,22 @@ var Bombo = function() {
     //Arrancar bombo
     this.LlenarBombo();
     this.ComenzarJuego();
-}
+};
+
 
 var Carton = function() {
 
-    var cuadricula = [];
-    cuadricula[0] = new Array(9);
-    cuadricula[1] = new Array(9);
-    cuadricula[2] = new Array(9);
-
-    var posiciones = [];
-    posiciones[0] = new Array(9);
-    posiciones[1] = new Array(9);
-    posiciones[2] = new Array(9);
+    var cuadricula = [ [], [], [] ];
+    var posiciones = [ [], [], [] ];
 
     var rangoInicio = [1,10,20,30,40,50,60,70,80];
     var rangoFin    = [9,19,29,39,49,59,69,79,90];
+
+    var numeroMaximoFilas = 3;
+    var numeroMaximoColumnas = 9;
+
+    var numeroMaximoPosicionesNulas = 4;
+    var numeroMaximoPosicionesValidas = 5;
 
     this.GetCuadricula = function() {
         return cuadricula;
@@ -82,48 +82,44 @@ var Carton = function() {
     }
 
     this.GetRango = function(tipo, posicion) {
-        if (tipo === 'inicio') {
-            return rangoInicio[posicion];
-        } else {
-            return rangoFin[posicion];
-        }
+        return (tipo === 'inicio' || tipo === 'fin') ? rangoInicio[posicion] : rangoFin[posicion];
     }
 
     this.GetPosicionesPorTipo = function(tipo) {
-        var numero = 0;
-        for (var i = 0; i < posiciones.length; i++) {
-            for (var j = 0; j < posiciones[i].length; j++) {
-                if (posiciones[i][j] === tipo) numero++;
+        var contador = 0;
+        for (var i = 0; i < numeroMaximoFilas; i++) {
+            for (var j = 0; j < numeroMaximoColumnas; j++) {
+                if (posiciones[i][j] === tipo) contador++;
             }
         }
-        return numero;
+        return contador;
     }
 
     this.GenerarPosiciones = function() {
-        for (var i = 0; i < posiciones.length; i++) {
+        for (var i = 0; i < numeroMaximoFilas; i++) {
 
-            var contadorVacios = 0;
-            var contadorValidos = 0;
+            var contadorPosicionesNulas = 0;
+            var contadorPosicionesValidas = 0;
 
-            for (var j = 0; j < posiciones[i].length; j++) {
+            for (var j = 0; j < numeroMaximoColumnas; j++) {
 
-                var numero = this.GenerarNumeroRandom(0,1);
+                var numeroRandom = this.GenerarNumeroRandom(0,1);
 
-                if (numero === 0) {
-                    contadorVacios++
+                if (numeroRandom === 0) {
+                    contadorPosicionesNulas++
                 } else {
-                    contadorValidos++
+                    contadorPosicionesValidas++
                 };
 
-                if (contadorVacios <= 4) {
-                    if (contadorValidos <= 5) {
-                        posiciones[i][j] = numero;
+                if (contadorPosicionesNulas <= numeroMaximoPosicionesNulas) {
+                    if (contadorPosicionesValidas <= numeroMaximoPosicionesValidas) {
+                        posiciones[i][j] = numeroRandom;
                     } else {
                         posiciones[i][j] = 0;
                     }
-                } else if (contadorValidos <= 5) {
-                    if (contadorVacios <= 4) {
-                        posiciones[i][j] = numero;
+                } else if (contadorPosicionesValidas <= numeroMaximoPosicionesValidas) {
+                    if (contadorPosicionesNulas <= numeroMaximoPosicionesNulas) {
+                        posiciones[i][j] = numeroRandom;
                     } else {
                         posiciones[i][j] = 1;
                     }
@@ -133,18 +129,16 @@ var Carton = function() {
     }
 
     this.GenerarValores = function() {
-        var num = 0;
-        for (var i = 0; i < this.GetCuadricula().length; i++) {
-            for (var j = 0; j < this.GetCuadricula()[i].length; j++) {
+        var numeroRandom = 0;
+        for (var i = 0; i < numeroMaximoFilas; i++) {
+            for (var j = 0; j < numeroMaximoColumnas; j++) {
                 if (this.GetPosiciones(i, j) === 1) {
-                num = this.GenerarNumeroRandom(this.GetRango('inicio', i), this.GetRango('fin', i));
-                    this.SetValores(i, j, num);
+                    numeroRandom = this.GenerarNumeroRandom(this.GetRango('inicio', i), this.GetRango('fin', i));
+                    this.SetValores(i, j, numeroRandom);
                 } else {
                     this.SetValores(i, j, 0);
                 }
-
             }
-
         }
     }
 
