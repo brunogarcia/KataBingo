@@ -1,13 +1,13 @@
 describe("En la Kata Bingo", function() {
-    var bombo, carton, jugador;
+    var bombo, juego;
 
     beforeEach(function() {
         bombo = new Bombo();
-        bombo.Iniciar();
-        carton = new Carton();
-        jugador = new Jugador();
-        jugador.NuevoCarton();
+        bombo.Init();
+        juego = new Juego();
+        juego.Init(3);
     });
+
 
 
     describe("El bombo...", function() {
@@ -29,48 +29,44 @@ describe("En la Kata Bingo", function() {
             expect(bombo.GetTablaNumerosCantados().length).toBe(90);
         });
 
-        xit("El bombo debe notificar a los jugadores los numeros que van saliendo", function() {
-
+        it("El bombo debe notificar a los jugadores los numeros que van saliendo", function() {
+            expect(juego.CheckNumero(1)).toBeTruthy();
         })
 
-    });
-
-    describe("Cada jugador...", function() {
-
-        xit("Debe tener un carton", function() {
-
-        });
     });
 
     describe("Cada carton...", function() {
 
         it("Debe tener 3 filas", function() {
-            expect(carton.GetCuadricula().length).toBe(3);
+            expect(juego.GetCartonesVendidos()[0].GetCuadricula().length).toBe(3);
         });
 
         it("Debe tener 9 columnas por fila", function() {
-            expect(carton.GetCuadricula()[0].length).toBe(9);
+            expect(juego.GetCartonesVendidos()[0].GetCuadricula()[0].length).toBe(9);
         });
 
         it("Debe tener 12 casillas nulas", function() {
-            expect(carton.GetTotalPosicionesPorTipo(0)).toBe(12);
+            expect(juego.GetCartonesVendidos()[0].GetTotalPosicionesPorTipo('nula')).toBe(12);
         });
 
         it("Debe tener 15 casillas validas", function () {
-            expect(carton.GetTotalPosicionesPorTipo(1)).toBe(15);
+            expect(juego.GetCartonesVendidos()[0].GetTotalPosicionesPorTipo('valida')).toBe(15);
         });
 
         it("Cada columna tiene un rango de valores predeterminado", function() {
-            for (var i = 0; i < carton.GetCuadricula().length; i++) {
-                for (var j = 0; j < carton.GetCuadricula()[i].length; j++) {
-                    if (carton.GetPosiciones(i, j) === 1) {
-                        expect(carton.GetCuadricula()[i][j]).toBeGreaterThan(carton.GetRango('inicio', i)-1);
-                        expect(carton.GetCuadricula()[i][j]).toBeLessThan(carton.GetRango('fin', i)+1);
+            for (var i = 0; i < juego.GetCartonesVendidos()[0].GetCuadricula().length; i++) {
+                for (var j = 0; j < juego.GetCartonesVendidos()[0].GetCuadricula()[i].length; j++) {
+                    if (juego.GetCartonesVendidos()[0].GetPosiciones(i, j) === 1) {
+                        expect(juego.GetCartonesVendidos()[0].GetCuadricula()[i][j]).toBeGreaterThan(juego.GetCartonesVendidos()[0].GetRango('inicio', i)-1);
+                        expect(juego.GetCartonesVendidos()[0].GetCuadricula()[i][j]).toBeLessThan(juego.GetCartonesVendidos()[0].GetRango('fin', i)+1);
                     } else {
-                        expect(carton.GetCuadricula()[i][j]).toBe(0);
+                        expect(juego.GetCartonesVendidos()[0].GetCuadricula()[i][j]).toBe(0);
                     }
                 }
             }
         })
     })
 });
+
+
+
